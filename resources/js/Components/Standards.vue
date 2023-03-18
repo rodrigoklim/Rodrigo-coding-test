@@ -4,10 +4,11 @@
             <div class="flex h-6 items-center">
                 <input
                     :id="index"
+                    v-model="checked[index]"
                     name="comments"
                     type="checkbox"
                     class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    @change="addStandard(standard)"
+                    @click="selectStandard(standard, $event.target.checked)"
                 />
             </div>
             <div class="ml-3 text-sm leading-6">
@@ -21,9 +22,25 @@
 <script>
     export default {
         props: ['standards'],
+        data() {
+            return {
+                checked: []
+            }
+        },
         methods: {
+            selectStandard(standard, value){
+                if (value) {
+                    this.addStandard(standard)
+                } else {
+                    this.removeStandard(standard)
+                }
+            },
             addStandard (standard) {
                 this.$store.dispatch('standards/addItemToStandards', standard)
+            },
+
+            removeStandard (standard) {
+                this.$store.dispatch('standards/removeItemFromStandards', standard)
             }
         }
     }

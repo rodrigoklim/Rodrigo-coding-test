@@ -20,12 +20,19 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+
     export default {
         props: ['standards'],
         data() {
             return {
                 checked: []
             }
+        },
+        computed: {
+            ...mapState({
+                checkedStandards: state => state.standards.items
+            }),
         },
         methods: {
             selectStandard(standard, value){
@@ -41,6 +48,13 @@
 
             removeStandard (standard) {
                 this.$store.dispatch('standards/removeItemFromStandards', standard)
+            }
+        },
+        watch: {
+            checkedStandards: function (val) {
+                if (!val.length) {
+                    this.checked = []
+                }
             }
         }
     }
